@@ -1,5 +1,5 @@
 {
-  "name": "babylon playground",
+  "name": "babylon_playground",
   "version": "1.0.0",
   "description": "react webpack app template",
   "main": "src/js/index.js",
@@ -25,7 +25,7 @@
     "webpack-dev-server": "^2.6.1"
   },
   "scripts": {
-    "build": "cp src/html/index.html build/ && webpack --config webpack.config.js",
+    "build": "cp src/html/index.html build/ && cp src/js/babylon.custom.js build/ && webpack --config webpack.config.js",
     "start": "yarn run build && webpack-dev-server"
   }
 }

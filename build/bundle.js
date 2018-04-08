@@ -20114,7 +20114,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* global BABYLON */
+
 
 var MainComponent = function (_Component) {
   _inherits(MainComponent, _Component);
@@ -20122,16 +20123,58 @@ var MainComponent = function (_Component) {
   function MainComponent(props) {
     _classCallCheck(this, MainComponent);
 
-    return _possibleConstructorReturn(this, (MainComponent.__proto__ || Object.getPrototypeOf(MainComponent)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (MainComponent.__proto__ || Object.getPrototypeOf(MainComponent)).call(this, props));
+
+    _this.createScene = _this.createScene.bind(_this);
+    return _this;
   }
 
   _createClass(MainComponent, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var canvas = this.canvas;
+
+      console.log(canvas);
+      this.engine = new BABYLON.Engine(canvas, true);
+      var scene = this.createScene(this.engine, canvas);
+      this.engine.runRenderLoop(function () {
+        return scene.render();
+      });
+    }
+  }, {
+    key: 'createScene',
+    value: function createScene(engine, canvas) {
+      var scene = new BABYLON.Scene(engine);
+      var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), scene);
+      camera.attachControl(canvas, true);
+
+      var light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 0), scene);
+      var light2 = new BABYLON.PointLight('light2', new BABYLON.Vector3(0, 1, -1), scene);
+      var sphere = BABYLON.MeshBuilder.CreateSphere('sphere', { diameter: 0.5 }, scene);
+
+      return scene;
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
-        _react.Fragment,
-        null,
-        'cough'
+        'div',
+        { style: {
+            position: 'relative',
+            width: '100vw',
+            height: '100vh',
+            margin: 0,
+            padding: 0,
+            backgroundColor: '#303030'
+          } },
+        _react2.default.createElement('canvas', {
+          style: { position: 'relative', width: '80vw', height: '80vh', top: '10vh', left: '10vw' },
+          ref: function ref(c) {
+            return _this2.canvas = c;
+          }
+        })
       );
     }
   }]);
@@ -20181,7 +20224,7 @@ exports = module.exports = __webpack_require__(32)(false);
 
 
 // module
-exports.push([module.i, "div {\n  color: blue; }\n", ""]);
+exports.push([module.i, "body {\n  margin: 0; }\n\n#react-root {\n  width: 100%;\n  height: 100%; }\n", ""]);
 
 // exports
 
@@ -20724,3 +20767,4 @@ module.exports = function (css) {
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=bundle.js.map
